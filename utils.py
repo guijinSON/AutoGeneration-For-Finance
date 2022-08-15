@@ -16,3 +16,20 @@ def get_model_tokenizer(eval=True):
         model.eval()
         
     return tokenizer,model
+
+def generate_text(tokenizer,model,prompt):
+    punct = ('!', '?', '.')
+
+    input_ids = tokenizer(text)['input_ids']
+    gen_ids = model.generate(torch.tensor([input_ids]),
+                                max_length=40,
+                                repetition_penalty=2.0)
+    generated = tokenizer.decode(gen_ids[0,:].tolist()).strip()
+
+    if generated != '' and generated[-1] not in punct:
+        for i in reversed(range(len(generated))):
+            if generated[i] in punct:
+                break
+        generated = generated[:(i+1)]
+
+    return generated
