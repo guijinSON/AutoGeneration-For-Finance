@@ -2,7 +2,7 @@ import torch
 from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast
 
 
-def get_model_tokenizer(eval=True):
+def get_tokenizer_model(eval=True):
     tokenizer = PreTrainedTokenizerFast.from_pretrained("skt/kogpt2-base-v2",
                                                     bos_token='</s>',
                                                     eos_token='</s>',
