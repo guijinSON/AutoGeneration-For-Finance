@@ -20,7 +20,7 @@ def get_tokenizer_model(eval=True):
 def generate_text(tokenizer,model,prompt):
     punct = ('!', '?', '.')
 
-    input_ids = tokenizer(text)['input_ids']
+    input_ids = tokenizer(prompt)['input_ids']
     gen_ids = model.generate(torch.tensor([input_ids]),
                                 max_length=40,
                                 repetition_penalty=2.0)
