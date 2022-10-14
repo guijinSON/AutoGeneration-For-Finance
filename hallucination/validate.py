@@ -2,7 +2,7 @@ import spacy
 import re
 import country_converter as coco
 import torch.nn as nn
-from emb import emb_sentence
+from funcs.hallucination.emb import emb_sentence
 
 # df = pd.read_csv('')
 
