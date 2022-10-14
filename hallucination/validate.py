@@ -178,3 +178,13 @@ def score_text(src, tgt, model, tokenizer, NER, return_logit=True):
         "src_tgt_entity_person":src_tgt_entity_person,
         "src_tgt_entity_gpe":src_tgt_entity_gpe
     }
+
+def best_text(src,tgt_list,model,tokenizer,NER):
+    tgt_scores = [score_text(src,tgt,model,tokenizer,NER) for tgt in tgt_list]
+    tgt_entity_scores = [score['src_tgt_entity_num'] + score['src_tgt_entity_person'] + score['src_tgt_entity_gpe'] for score in tgt_scores]
+    tgt_cos_scores = [score['src_tgt_cos_score'] for score in tgt_scores]
+
+    if len(set(tgt_entity_scores)) != 1:
+        return np.argmin(tgt_entity_scores)
+    else:
+        return np.argmax(tgt_cos_scores)
