@@ -103,3 +103,70 @@ def single_epoch_validate(df, model,tokenizer, device):
         "Accuracy": sum(output)/len(output),
         "Logits": sum(output_logits)/len(output_logits)
         }   
+
+
+import torch.nn as nn
+import spacy
+import re
+import country_converter as coco
+from funcs.hallucination.emb import emb_sentence
+
+def score_text(src, tgt, model, tokenizer, NER):
+    cos = nn.CosineSimilarity(dim=1, eps=1e-6)
+    #NER = spacy.load('en_core_web_sm')
+
+    """
+    semantic comparison
+    """
+
+    src_emb = emb_sentence(src,model,tokenizer,'cpu')
+
+    if len(tgt) > 100:
+        n = len(tgt)//100
+        sliced_tgt_emb = [cos(src_emb, emb_sentence(tgt[i*100:(i+1)*100],model,tokenizer,'cpu')).item() for i in range(n)]
+        src_tgt_cos_score = sum(sliced_tgt_emb)/n
+    else:
+        tgt_emb = emb_sentence(tgt,model, tokenizer, 'cpu')
+        src_tgt_cos_score = cos(src_emb,tgt_emb).item()
+
+    """
+    number comparison 
+    """
+
+    src_num = re.findall("\d+", src)
+    tgt_num = re.findall("\d+",tgt)
+
+    src_tgt_entity_num = [n for n in tgt_num if n not in src_num]
+
+    """
+    entity comparison #1
+    """
+
+    src_entity  = [(_.text,_.label_) for _ in NER(src).ents]
+    tgt_entity  = [(_.text,_.label_) for _ in NER(tgt).ents]
+
+        # """
+        # PERSON Entity
+        # """
+    src_entity_p  = [_[0] for _ in src_entity if _[1] == 'PERSON']
+    tgt_entity_p  = [_[0] for _ in tgt_entity if _[1] == 'PERSON']
+
+    src_tgt_entity_person = [n for n in tgt_entity_p if n not in src_entity_p]
+
+        # """
+        # GPE Entity
+        # """
+
+    src_entity_g  = coco.convert(names=[_[0] for _ in src_entity if _[1] == 'GPE'], to='name_short')
+    src_entity_g = [src_entity_g] if isinstance(src_entity_g, str) else src_entity_g
+
+    tgt_entity_g = coco.convert(names=[_[0] for _ in tgt_entity if _[1] == 'GPE'], to='name_short')
+    src_tgt_entity_gpe = [tgt_entity_g] if isinstance(tgt_entity_g, str) else tgt_entity_g
+    src_tgt_entity_gpe =[_ for _ in src_tgt_entity_gpe if _ != 'not found']
+    
+    return {
+        "src_tgt_cos_score":src_tgt_cos_score,
+        "src_tgt_entity_num":src_tgt_entity_num,
+        "src_tgt_entity_person":src_tgt_entity_person,
+        "src_tgt_entity_gpe":src_tgt_entity_gpe
+    }
