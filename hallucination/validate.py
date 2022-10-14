@@ -111,7 +111,7 @@ import re
 import country_converter as coco
 from funcs.hallucination.emb import emb_sentence
 
-def score_text(src, tgt, model, tokenizer, NER):
+def score_text(src, tgt, model, tokenizer, NER, return_logit=True):
     cos = nn.CosineSimilarity(dim=1, eps=1e-6)
     #NER = spacy.load('en_core_web_sm')
 
@@ -164,6 +164,14 @@ def score_text(src, tgt, model, tokenizer, NER):
     src_tgt_entity_gpe = [tgt_entity_g] if isinstance(tgt_entity_g, str) else tgt_entity_g
     src_tgt_entity_gpe =[_ for _ in src_tgt_entity_gpe if (_ != 'not found') and (_ not in src_entity_g)]
     
+    if return_logit:
+         return {
+            "src_tgt_cos_score":src_tgt_cos_score,
+            "src_tgt_entity_num": len(src_tgt_entity_num),
+            "src_tgt_entity_person": len(src_tgt_entity_person),
+            "src_tgt_entity_gpe": len(src_tgt_entity_gpe)
+        }
+
     return {
         "src_tgt_cos_score":src_tgt_cos_score,
         "src_tgt_entity_num":src_tgt_entity_num,
