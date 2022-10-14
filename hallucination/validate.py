@@ -7,7 +7,7 @@ from funcs.hallucination.emb import emb_sentence
 # df = pd.read_csv('')
 
 
-def single_epoch_validate(df, model, device):
+def single_epoch_validate(df, model,tokenizer, device):
     output=[]
     output_logits = []
     cos = nn.CosineSimilarity(dim=1, eps=1e-6)
@@ -102,4 +102,4 @@ def single_epoch_validate(df, model, device):
     return {
         "Accuracy": sum(output)/len(output),
         "Logits": sum(output_logits)/len(output_logits)
-        }    
+        }   
