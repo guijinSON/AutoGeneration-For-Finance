@@ -162,7 +162,7 @@ def score_text(src, tgt, model, tokenizer, NER):
 
     tgt_entity_g = coco.convert(names=[_[0] for _ in tgt_entity if _[1] == 'GPE'], to='name_short')
     src_tgt_entity_gpe = [tgt_entity_g] if isinstance(tgt_entity_g, str) else tgt_entity_g
-    src_tgt_entity_gpe =[_ for _ in src_tgt_entity_gpe if _ != 'not found' or _ not in src_tgt_entity_gpe]
+    src_tgt_entity_gpe =[_ for _ in src_tgt_entity_gpe if _ != 'not found' or _ not in src_entity_gpe]
     
     return {
         "src_tgt_cos_score":src_tgt_cos_score,
