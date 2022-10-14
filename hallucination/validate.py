@@ -6,10 +6,12 @@ from emb import emb_sentence
 
 # df = pd.read_csv('')
 
-def single_epoch_validate(df,):
+def single_epoch_validate(df, model):
   cos = nn.CosineSimilarity(dim=1, eps=1e-6)
   NER = spacy.load('en_core_web_sm')
-  
+  output = []
+  output_logits = []
+
   for row in df.iterrows():
     row = row[1]
     src = row['seg_text_origin']
@@ -87,10 +89,16 @@ def single_epoch_validate(df,):
 
     if e_an > e_bn:
         output.append(1)
+        output_logits.append(bn-an)
     else:
         if an < bn:
             output.append(1)
+            output_logits.append(bn-an)
+
         else:
             output.append(0)
-            
-return sum(output)/len(output)
+                
+    return {
+          "Accuracy": sum(output)/len(output),
+          "Logits": sum(output_logits)/len(output_logits)
+          }    
