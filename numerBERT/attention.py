@@ -1,8 +1,6 @@
 import torch
-from BERT_explainability.modules.BERT.ExplanationGenerator import Generator
 
-def weight_on_num(text, model, tokenizer, classification, device):
-    explanations = Generator(model)
+def weight_on_num(text, model, explanations, tokenizer, classification, device):
     #Encode Sentence
     encoding = tokenizer([text], return_tensors='pt')
     input_ids = encoding['input_ids'].to(device)
