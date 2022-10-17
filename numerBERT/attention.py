@@ -23,10 +23,10 @@ def weight_on_num(text, model, explanations, tokenizer, classifications, device)
 
     tokens = tokenizer.convert_ids_to_tokens(input_ids.flatten())
     logits = [(tokens[i], expl[i].item()) for i in range(len(tokens))]
-    num_logits = [tup for tup in logits if tup[0].isdigit()]
+   
     
     return {
         "class":class_name,
         "logits":logits,
-        "num_logits":num_logits
+        "num_logits": [tup for tup in logits if tup[0].isdigit()]
         }
