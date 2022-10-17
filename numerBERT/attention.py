@@ -1,6 +1,6 @@
 import torch
 
-def weight_on_num(text, model, explanations, tokenizer, classification, device):
+def weight_on_num(text, model, explanations, tokenizer, classifications, device):
     #Encode Sentence
     encoding = tokenizer([text], return_tensors='pt')
     input_ids = encoding['input_ids'].to(device)
