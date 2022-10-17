@@ -24,4 +24,4 @@ def weight_on_num(text, model, explanations, tokenizer, classifications, device)
     tokens = tokenizer.convert_ids_to_tokens(input_ids.flatten())
     logits = [(tokens[i], expl[i].item()) for i in range(len(tokens))]
     
-    return class_name, logit
+    return class_name, logits
