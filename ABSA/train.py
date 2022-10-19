@@ -24,5 +24,5 @@ def single_epoch_train(model,optimizer,train_loader,loss_func, device):
 
         wandb.log({
             "Training Loss":loss,
-            "Accuracy":Accuracy
+            "Accuracy":acc
             })
