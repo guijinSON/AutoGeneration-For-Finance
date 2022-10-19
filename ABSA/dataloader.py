@@ -12,12 +12,14 @@ class ABSADataset(Dataset):
         return len(self.src)
 
     def __getitem__(self, idx):   
-        split_idx = self.src[idx].find(':')    
-        tgt_word = self.src[idx][:split_idx].strip()
+         split_idx = self.src[idx].find(':')    
+#         tgt_word = self.src[idx][:split_idx].strip()
 
-        src = self.src[idx][split_idx+1:].strip() + '.'
-        src = src.replace(tgt_word, '[TGT]')
+#         src = self.src[idx][split_idx+1:].strip() + '.'
+#         src = src.replace(tgt_word, '[TGT]')
 
+        src = self.src[idx].strip() + '.'
+        src = src[:idx] + self.tokenizer.sep_token + src[idx+1:]
         src_tokenized = self.tokenizer.encode_plus(src,
                                                    padding='max_length',
                                                    truncation=True,
