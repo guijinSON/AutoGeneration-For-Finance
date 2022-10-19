@@ -26,3 +26,18 @@ def single_epoch_train(model,optimizer,train_loader,loss_func, device):
             "Training Loss":loss,
             "Accuracy":acc
             })
+        
+def single_epoch_test(model, test_loader, device):
+    for batch in tqdm(test_loader):
+        o = model(
+            input_ids = batch['src_input_ids'].to(device),
+            token_type_ids = batch['src_token_type_ids'].to(device),
+            attention_mask = batch['src_attention_mask'].to(device)
+            )
+       
+        pred = torch.argmax(o.logits,dim=1).detach().cpu()
+        acc = (sum(batch['label']==pred).item()) / len(pred)
+
+        wandb.log({
+            "Test Accuracy":acc
+            })
