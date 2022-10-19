@@ -38,7 +38,7 @@ def single_epoch_test(model, test_loader, device):
        
         pred = torch.argmax(o.logits,dim=1).detach().cpu()
         acc = (sum(batch['label']==pred).item()) / len(pred)
-        tot_acc++ acc
+        tot_acc += acc
 
         wandb.log({
             "Test Accuracy":acc
