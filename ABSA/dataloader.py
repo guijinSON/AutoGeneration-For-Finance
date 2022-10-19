@@ -18,7 +18,7 @@ class ABSADataset(Dataset):
 #         src = self.src[idx][split_idx+1:].strip() + '.'
 #         src = src.replace(tgt_word, '[TGT]')
 
-        src = self.src[idx].strip() + '.'
+        src = self.src[idx] + '.'
         src = src[:idx] + self.tokenizer.sep_token + src[idx+1:]
         src_tokenized = self.tokenizer.encode_plus(src,
                                                    padding='max_length',
