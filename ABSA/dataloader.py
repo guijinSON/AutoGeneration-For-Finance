@@ -12,7 +12,7 @@ class ABSADataset(Dataset):
         return len(self.src)
 
     def __getitem__(self, idx):   
-         split_idx = self.src[idx].find(':')    
+        split_idx = self.src[idx].find(':')    
 #         tgt_word = self.src[idx][:split_idx].strip()
 
 #         src = self.src[idx][split_idx+1:].strip() + '.'
