@@ -45,7 +45,7 @@ class ABSADatasetforT5(Dataset):
         return len(self.src)
 
     def __getitem__(self, idx):
-        src = self.src[idx]
+        src = self.src[idx] + '.'
         tgt = f'The sentiment for [TGT] in the given sentence is {self.label[idx]}.'
 
         return {
