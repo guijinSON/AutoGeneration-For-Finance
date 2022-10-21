@@ -84,7 +84,7 @@ def single_epoch_train_for_T5(model,optimizer,scheduler,train_loader,device):
     scheduler.step()
 
 @torch.no_grad()
-def single_epoch_test_for_T5(model,test_loader,device):
+def single_epoch_test_for_T5(model,test_loader,device,log=True):
     f1_metric = MulticlassF1Score(num_classes=3)
     acc_metric = Accuracy()
 
@@ -117,4 +117,5 @@ def single_epoch_test_for_T5(model,test_loader,device):
 
     f1 = f1/len(loader)
     acc = acc/len(loader)
-    wandb.log({"Test Accuracy":acc, "Test F1 Score": f1})
+    if log:
+        wandb.log({"Test Accuracy":acc, "Test F1 Score": f1})
