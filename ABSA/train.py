@@ -47,3 +47,74 @@ def single_epoch_test(model, test_loader, device):
     wandb.log({
             "Total Test Accuracy": tot_acc
             })
+
+    
+import tqdm
+import torch
+import wandb
+from torchmetrics.classification import MulticlassF1Score
+from torchmetrics import Accuracy
+
+def single_epoch_train_for_T5(model,optimizer,scheduler,train_loader,device):
+    model.train()
+    loader = tqdm.tqdm(train_loader)
+
+    for idx,batch in enumerate(loader):
+
+        src_input_ids, src_attention_mask, tgt_input_ids, tgt_attention_mask = (
+            batch['src_input_ids'].to(device),
+            batch['src_attention_mask'].to(device),
+            batch['tgt_input_ids'].to(device),
+            batch['tgt_attention_mask'].to(device)
+        )
+
+        outputs = model(
+            input_ids = src_input_ids,
+            attention_mask = src_attention_mask,
+            labels = tgt_input_ids,
+            decoder_attention_mask = tgt_attention_mask
+        )
+
+        loss = outputs[0]
+
+        wandb.log({"Training Loss":loss.item()})
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+    scheduler.step()
+
+@torch.no_grad()
+def single_epoch_test_for_T5(model,test_loader,device):
+    f1_metric = MulticlassF1Score(num_classes=3)
+    acc_metric = Accuracy()
+
+    model.eval()
+    loader = tqdm.tqdm(test_loader)
+    acc = 0
+    f1 = 0
+    for idx,batch in enumerate(loader):
+
+        src_input_ids, src_attention_mask, tgt_input_ids, tgt_attention_mask = (
+            batch['src_input_ids'].to(device),
+            batch['src_attention_mask'].to(device),
+            batch['tgt_input_ids'].to(device),
+            batch['tgt_attention_mask'].to(device)
+        )
+
+        outputs = model(
+            input_ids = src_input_ids,
+            attention_mask = src_attention_mask,
+            labels = tgt_input_ids,
+            decoder_attention_mask = tgt_attention_mask
+        )
+
+        logit = outputs['logits']
+        pred = torch.argmax(logit[:,-4,-3:],axis=1).detach().cpu()
+        label = batch['label']
+
+        f1 += f1_metric(pred,label).item()
+        acc += acc_metric(pred,label).item()
+
+    f1 = f1/len(loader)
+    acc = acc/len(loader)
+    wandb.log({"Test Accuracy":acc, "Test F1 Score": f1})
