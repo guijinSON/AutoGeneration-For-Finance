@@ -10,10 +10,13 @@ def get_model_tokenizer(MODEL_PATH):
     return model, tokenizer
 
 
-def get_T5_tokenizer(MODEL_PATH='t5-large'):
+def get_T5_tokenizer(MODEL_PATH='t5-large',output_attentions=False):
     tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-    model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
-
+    if output_attentions:
+        model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH, output_attentions=True)
+    else:
+        model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
+        
     num_added_toks = tokenizer.add_tokens(['[TGT]'])
     num_added_toks = tokenizer.add_tokens(['[ENT]'])
     num_added_toks = tokenizer.add_tokens(['POSITIVE'])
