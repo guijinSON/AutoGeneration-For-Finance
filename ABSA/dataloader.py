@@ -45,12 +45,7 @@ class ABSADatasetforT5(Dataset):
         return len(self.src)
 
     def __getitem__(self, idx):
-        split_idx = self.src[idx].find(':')    
-        tgt_word = self.src[idx][:split_idx].strip()
-
-        src = self.src[idx][split_idx+1:].strip() + '.'
-        src = src.replace(tgt_word, '[TGT]')
-
+        src = self.src[idx]
         tgt = f'The sentiment for [TGT] in the given sentence is {self.label[idx]}.'
 
         return {
