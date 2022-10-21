@@ -15,6 +15,7 @@ def get_T5_tokenizer(MODEL_PATH='t5-large'):
     model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
 
     num_added_toks = tokenizer.add_tokens(['[TGT]'])
+    num_added_toks = tokenizer.add_tokens(['[ENT]'])
     num_added_toks = tokenizer.add_tokens(['POSITIVE'])
     num_added_toks = tokenizer.add_tokens(['NEGATIVE'])
     num_added_toks = tokenizer.add_tokens(['NEUTRAL'])
