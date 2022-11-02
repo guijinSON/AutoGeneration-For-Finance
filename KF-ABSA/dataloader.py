@@ -12,7 +12,7 @@ class KorFIN_ABSADatasetforBERT(Dataset):
 
     def __getitem__(self, idx):
         src = self.src[idx] + '.'
-        label = self.classifcation[self.label[idx].upper()]
+        label = self.classification[self.label[idx].upper()]
 
         return {
             'src':src,
