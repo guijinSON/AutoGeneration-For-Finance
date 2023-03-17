@@ -22,7 +22,7 @@ class Seq2SeqDataset(Dataset):
 
         input_str = pre_text + table + post_text
         question = self.question[idx]
-        output_str = "According to the passage, " + self.gold[idx] +'. Accordingly, the answer is ' + self.answer[idx]
+        output_str = "According to the passage, " + 'and'.join(self.gold[idx]) +'. Accordingly, the answer is ' + self.answer[idx]
         return {
             'input_str': f"""
             Read the given passage and answer the question.
