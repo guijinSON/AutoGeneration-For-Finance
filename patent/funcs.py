@@ -75,8 +75,8 @@ class patent_analysis():
     
     def nonrecursive_citation_count(self,uspc):
         uspc = self.uspc2string(uspc)
-        i = ps.inward_citation_count(uspc)
-        r = ps.recursive_citation_count(uspc)
+        i = self.inward_citation_count(uspc)
+        r = self.recursive_citation_count(uspc)
         batch = pd.DataFrame({'year':i['year'], 'count': i['count']-r['count']})
         batch = self.fill_year(batch)
         return batch 
