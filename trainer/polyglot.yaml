@@ -5,6 +5,7 @@ general:
   base_model_path: 'EleutherAI/polyglot-ko-12.8b'
   wandb_api_key: '559c4e6dd6a72ffc6875f4cd60095ac1a6518b37'
   wandb_project: 'polyglot-instruct'
+  output_dir: 'ckpt/'
 
 training:
   num_train_epochs: 1
@@ -13,6 +14,9 @@ training:
   logging_steps: 10
   save_strategy: 'epoch'
   save_steps: 100
+  max_seq_length: 2048
+  packing: true
+  dataset_text_field: 'text'
   # Add more parameters as needed
 
 freeze_parameters:
