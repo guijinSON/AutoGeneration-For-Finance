@@ -1,10 +1,10 @@
 general:
   model_name: 'polyglot'
-  data_path: 'org'
+  data_path: 'amphora/plat-clean'
   freezing_strategy: 'intermediate'
-  base_model_path: '/path/to/your/base/model'
-  wandb_api_key: 'your_wandb_api_key'
-  wandb_project: 'BBSprint'
+  base_model_path: 'EleutherAI/polyglot-ko-12.8b'
+  wandb_api_key: '559c4e6dd6a72ffc6875f4cd60095ac1a6518b37'
+  wandb_project: 'polyglot-instruct'
 
 training:
   num_train_epochs: 1
@@ -12,7 +12,7 @@ training:
   gradient_accumulation_steps: 30
   logging_steps: 10
   save_strategy: 'epoch'
-  save_steps: 1000000000000
+  save_steps: 100
   # Add more parameters as needed
 
 freeze_parameters:
