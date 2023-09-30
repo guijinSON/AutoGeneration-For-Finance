@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import warnings
 import random
 from peft import LoraConfig, get_peft_model
