@@ -40,7 +40,7 @@ def main(config_path):
     model.config.use_cache = False 
 
     training_args = TrainingArguments(
-        output_dir= config['general']['ckpt']
+        output_dir= config['general']['ckpt'],
         report_to="wandb",
         overwrite_output_dir=True,
         num_train_epochs=config['training']['num_train_epochs'],
