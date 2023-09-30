@@ -1,0 +1,5 @@
+accelerate==0.19.0
+huggingface-hub==0.15.1
+peft==0.3.0
+transformers @ git+https://github.com/huggingface/transformers@bacaab1629972b85664fe61ec3caa4da7b55b041
+trl @ git+https://github.com/guijinSON/trl.git@3b6ee03fb137e8573dc285be3ef5a813973ae478
